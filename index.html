@@ -9,6 +9,7 @@
     <form id="simulationForm">
         <label for="balance">Initial Balance:</label>
         <input type="number" id="balance" name="balance" required>
+        <input type="number" id="multiplier" name="risk multiplier">
         <button type="submit">Start Simulation</button>
     </form>
     <div id="results"></div>
@@ -17,18 +18,19 @@
         document.getElementById('simulationForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const balance = parseInt(document.getElementById('balance').value);
-            const results = simulateFibonacciGambling(balance);
+            const multiplier = parseInt(document.getElementById('multiplier').value);
+            const results = simulateFibonacciGambling(balance, multiplier);
             document.getElementById('results').innerHTML = results;
         });
 
-        function simulateFibonacciGambling(money) {
+        function simulateFibonacciGambling(money, mul) {
             let fibonacciNumber = 1;
             let roundNumber = 1;
-            let bet = Math.floor(fibonacciNumber * (money / 100));
+            let bet = Math.floor(fibonacciNumber * (money / 100)) * mul;
             let results = [];
             let highestBalance = money;
             while (true) {
-                bet = Math.floor(fibonacciNumber * (money / 100));
+                bet = Math.floor(fibonacciNumber * (money / 100)) * mul;
                 const res = prompt("Round " + roundNumber + ": Balance " + money + ", Bet " + bet + ", Result? (w for win, l for loss, c for cancel)");
                 if (res === null) { // User pressed Cancel
                     break;
