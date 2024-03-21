@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fibonacci Gambling Simulation</title>
+</head>
+<body>
+    <h1>Fibonacci Gambling Simulation</h1>
+    <form id="simulationForm">
+        <label for="balance">Initial Balance:</label>
+        <input type="number" id="balance" name="balance" required>
+        <button type="submit">Start Simulation</button>
+    </form>
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('simulationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const balance = parseInt(document.getElementById('balance').value);
+            const results = simulateFibonacciGambling(balance);
+            document.getElementById('results').innerHTML = results;
+        });
+
+        function simulateFibonacciGambling(money) {
+            let fibonacciNumber = 1;
+            let roundNumber = 1;
+            let bet = Math.floor(fibonacciNumber * (money / 100));
+            let results = [];
+            let highestBalance = money;
+            while (true) {
+                bet = Math.floor(fibonacciNumber * (money / 100));
+                const res = prompt("Round " + roundNumber + ": Balance " + money + ", Bet " + bet + ", Result? (w for win, l for loss, c for cancel)");
+                if (res === null) { // User pressed Cancel
+                    break;
+                } else if (res === "w") { // Win
+                    money += bet;
+                    if (money > highestBalance) highestBalance = money;
+                    if (fibonacciNumber > 1 && fibonacciNumber !== 2) {
+                        fibonacciNumber -= 2;
+                    } else {
+                        fibonacciNumber = 1;
+                    }
+                } else if (res === "l") { // Loss
+                    money -= bet;
+                    fibonacciNumber += 1;
+                }
+                roundNumber += 1;
+                results.push("Round " + roundNumber + ": Balance " + money + ", Bet " + bet + ", Result " + res);
+            }
+            return `Highest Balance: ${highestBalance}, Rounds Played: ${roundNumber - 1}`;
+        }
+    </script>
+</body>
+</html>
